@@ -35,9 +35,9 @@ const login = async (req, res) => {
     })
     if(user && bcrypt.compareSync(password, user.password)){
       const token = jwt.sign({_id: user._id}, 'secret', {
-        expiresIn: '1d'
+        expiresIn: '2 days'
       })
-
+      
       return res.send(token)
     }else{
       return res.status(400).send('No such user')

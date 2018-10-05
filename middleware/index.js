@@ -29,13 +29,12 @@ const loginValidator = async (req, res, next) => {
 
 const auth = async (req, res, next) => {
   const token = req.headers['authorization']
-
   if (!token) res.status(400).send({data: null, err: 'There is no token provided'}).end()
   else {
     jwt.verify(token, 'secret', (err, result) => {
       if (err) res.status(400).send({data: null, err: err}).end()
       else if (result) {
-        User.findOne({_id: result._id, email: result.email, role: result.role}, (err, user) => {
+        User.findOne({_id: result._id}, (err, user) => {
           if (err) res.status(400).send({data: null, err: err}).end()
           if (!user || !user._id) res.status(400).send({data: null, err: 'invalid token'}).end()
           else {
@@ -54,5 +53,6 @@ const auth = async (req, res, next) => {
 
 module.exports = {
   loginValidator,
-  registerValidator
+  registerValidator,
+  auth
 }
